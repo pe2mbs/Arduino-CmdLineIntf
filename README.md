@@ -1,5 +1,5 @@
 # Arduino-CmdLineIntf
-This is a Command Line Interface library, original code from [A CLI for Arduino|https://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html] 
+This is a Command Line Interface library, original code from [A CLI for Arduino](https://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html)
 
 Improvements from the orignal code:
 * Decreased RAM usage.
