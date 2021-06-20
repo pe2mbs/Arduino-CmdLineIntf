@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)https://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>A CLI for Arduino - followup | Eugenio Pace Technical Blog</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="A CLI for Arduino - followup">
+<meta name="author" content="Eugenio Pace">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="In a previous post I described a simple approach for sending commands to an Arduino based project via the Serial interface.">
+<meta property="og:description" content="In a previous post I described a simple approach for sending commands to an Arduino based project via the Serial interface.">
+<link rel="canonical" href="http://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html">
+<meta property="og:url" content="http://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html">
+<meta property="og:site_name" content="Eugenio Pace Technical Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-10-30T17:31:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="A CLI for Arduino - followup">
+<script async="" src="./A CLI for Arduino - followup _ Eugenio Pace Technical Blog_files/analytics.js"></script><script type="application/ld+json">
+{"dateModified":"2020-10-30T17:31:00+00:00","datePublished":"2020-10-30T17:31:00+00:00","description":"In a previous post I described a simple approach for sending commands to an Arduino based project via the Serial interface.","mainEntityOfPage":{"@type":"WebPage","@id":"http://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html"},"url":"http://eugeniopace.org/arduino/cli/2020/10/30/A-CLI-for-Arduino-followup.html","@type":"BlogPosting","author":{"@type":"Person","name":"Eugenio Pace"},"headline":"A CLI for Arduino - followup","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./A CLI for Arduino - followup _ Eugenio Pace Technical Blog_files/main(1).css"><link type="application/atom+xml" rel="alternate" href="http://eugeniopace.org/feed.xml" title="Eugenio Pace Technical Blog"><script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-87967683-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+<script src="./A CLI for Arduino - followup _ Eugenio Pace Technical Blog_files/embed.js" data-timestamp="1624076144187"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.567531e1abfac5c88f2ef94b952d12ba.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.e51fe378e0cd63a2764bfb6c7ca542a8.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.56cd48e5a629f9154816339b3fb2942a.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script src="./A CLI for Arduino - followup _ Eugenio Pace Technical Blog_files/alfie_v4.63f1ab6d6b9d5807dc0c94ef3fe0b851.js" async="" charset="UTF-8"></script></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="https://eugeniopace.org/">Eugenio Pace Technical Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="https://eugeniopace.org/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">A CLI for Arduino - followup</h1>
+    <p class="post-meta"><time datetime="2020-10-30T17:31:00+00:00" itemprop="datePublished">Oct 30, 2020</time> • <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Eugenio Pace</span></span> • <span itemprop="time_to_read"><span itemprop="name">
+    
+    Reading time: 10 mins.
+    </span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>In a <a href="https://eugeniopace.org/arduino/epaper/eink/stoicism/cli/2020/01/25/A-Simple-Command-Line-Interface-for-Arduino.html">previous post</a> I described a simple approach for sending commands to an Arduino based project via the <code class="language-plaintext highlighter-rouge">Serial</code> interface.</p>
+
+<p>A reader of this blog asked for a complete sample, so I took some time to refactor the code a little bit and build a running sample. And here it is:</p>
+
+<blockquote>
+  <p>This is not to be confused with the <a href="https://github.com/arduino/arduino-cli">Arduino CLI</a>, which is something completely different.</p>
+</blockquote>
+
+<h3 id="the-cli-class">The CLI class</h3>
+
+<p>Save this in your Arduino project as <code class="language-plaintext highlighter-rouge">cli.h</code>. This is generic and will work for any commands.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifndef CLI_H
+#define CLI_H
+</span>
+<span class="cp">#define ARG_BUF_SIZE 100
+#define MAX_NUM_ARGS 10
+#define LINE_BUF_SIZE 128
+</span>
+<span class="k">enum</span> <span class="p">{</span> <span class="n">CMD_OK</span><span class="p">,</span> <span class="n">CMD_ERROR</span><span class="p">,</span> <span class="n">CMD_EXIT</span><span class="p">,</span> <span class="n">CMD_SKIP</span> <span class="p">};</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">cmd_name</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">cmd_handler</span><span class="p">)(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">aliases</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">CMD</span><span class="p">;</span>
+
+
+<span class="k">class</span> <span class="nc">CLI</span> <span class="p">{</span>
+
+  <span class="kt">char</span> <span class="n">line</span><span class="p">[</span><span class="n">LINE_BUF_SIZE</span><span class="p">];</span>
+  <span class="kt">char</span> <span class="n">args</span><span class="p">[</span><span class="n">MAX_NUM_ARGS</span><span class="p">][</span><span class="n">ARG_BUF_SIZE</span><span class="p">];</span>
+  
+  <span class="n">CMD</span> <span class="o">*</span> <span class="n">cmds</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">cmd_len</span><span class="p">;</span>
+  
+<span class="nl">public:</span>
+  <span class="n">CLI</span><span class="p">(</span> <span class="n">CMD</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span><span class="p">){</span>
+    <span class="n">cmds</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">cmd_len</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">run</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  
+    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"&gt; "</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">read_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">parse_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="p">){</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">executeCommand</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LINE_BUF_SIZE</span><span class="p">);</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">MAX_NUM_ARGS</span> <span class="o">*</span> <span class="n">ARG_BUF_SIZE</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">help</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">],</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">cmd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">helpString</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">"help"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)){</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Usage "</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">". "</span><span class="p">)</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">helpString</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">CMD_SKIP</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="nl">private:</span>
+  <span class="kt">int</span> <span class="n">parse_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">,</span> <span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">argument</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    
+    <span class="n">argument</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">" "</span><span class="p">);</span>
+    
+    <span class="k">while</span><span class="p">((</span><span class="n">argument</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">counter</span> <span class="o">&lt;</span> <span class="n">MAX_NUM_ARGS</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">ARG_BUF_SIZE</span><span class="p">){</span>
+                <span class="n">strcpy</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="n">counter</span><span class="p">],</span> <span class="n">argument</span><span class="p">);</span>
+                <span class="n">argument</span> <span class="o">=</span> <span class="n">strtok</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="s">" "</span><span class="p">);</span>
+                <span class="n">counter</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span><span class="p">{</span>
+                <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Input string too long."</span><span class="p">);</span>
+                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">counter</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="kt">char</span> <span class="o">*</span> <span class="n">read_line</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">line</span><span class="p">){</span>
+    <span class="n">String</span> <span class="n">line_string</span><span class="p">;</span>
+    
+    <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">());</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()){</span>
+        <span class="n">line_string</span> <span class="o">=</span> <span class="n">Serial</span><span class="p">.</span><span class="n">readStringUntil</span><span class="p">(</span><span class="sc">'\n'</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">line_string</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">LINE_BUF_SIZE</span><span class="p">){</span>
+          <span class="n">line_string</span><span class="p">.</span><span class="n">trim</span><span class="p">();</span> <span class="c1">//removes any trailing space or \r or \t</span>
+          <span class="n">line_string</span><span class="p">.</span><span class="n">toCharArray</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">LINE_BUF_SIZE</span><span class="p">);</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">line_string</span><span class="p">);</span>
+          <span class="k">return</span> <span class="n">line</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Input string too long."</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="n">CMD</span> <span class="o">*</span> <span class="n">findCommand</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">command</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">command</span> <span class="o">||</span> <span class="n">strlen</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+  
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">cmd_len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="c1">//Search by name</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cmd_name</span><span class="p">)){</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="c1">//Search all aliases</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">){</span>
+          <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="k">while</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="p">]){</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">])){</span>
+              <span class="k">return</span> <span class="o">&amp;</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="kt">int</span> <span class="n">executeCommand</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>  
+    <span class="n">CMD</span> <span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="n">findCommand</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">c</span><span class="p">){</span>
+      <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_handler</span><span class="p">)(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">"help"</span><span class="p">)</span><span class="o">||</span> <span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">"h"</span><span class="p">)){</span>
+      <span class="k">return</span> <span class="n">cmd_help</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Invalid command. Type </span><span class="se">\"</span><span class="s">help</span><span class="se">\"</span><span class="s"> for more."</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="kt">int</span> <span class="n">cmd_help</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"The following commands are available:"</span><span class="p">);</span>
+      <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">cmd_len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">);</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cmd_name</span><span class="p">);</span>
+          <span class="k">if</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">){</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"  ("</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="p">]){</span>
+              <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+              <span class="k">if</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]){</span>
+                <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">", "</span><span class="p">);</span>
+              <span class="p">}</span>
+              <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">")"</span><span class="p">);</span>
+          <span class="p">}</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">CMD</span> <span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="n">findCommand</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="kt">char</span> <span class="n">_args</span><span class="p">[</span><span class="n">MAX_NUM_ARGS</span><span class="p">][</span><span class="n">ARG_BUF_SIZE</span><span class="p">];</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="s">"help"</span><span class="p">,</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_name</span><span class="p">)){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span> <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Command not found"</span><span class="p">);</span> <span class="p">}</span>
+        <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">"help"</span><span class="p">);</span>
+        <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">""</span><span class="p">);</span>
+        <span class="n">returns</span> <span class="n">cmd_help</span><span class="p">(</span><span class="n">_args</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_name</span><span class="p">);</span>
+      <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">"help"</span><span class="p">);</span>
+      <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_handler</span><span class="p">)(</span><span class="n">_args</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<p>And the <code class="language-plaintext highlighter-rouge">.ino</code> file for the sample. In this example, we have 2 commands:</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">about</code> that prints a message.</li>
+  <li><code class="language-plaintext highlighter-rouge">millis</code> that prints the output of the <code class="language-plaintext highlighter-rouge">millis()</code> function.</li>
+</ol>
+
+<p>Notice that there are various <em>aliases</em> for each command. e.g. <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">abt</code> for <code class="language-plaintext highlighter-rouge">about</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">help</code> will automatically be added by the <code class="language-plaintext highlighter-rouge">CLI</code> class.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "cli.h"
+</span>
+<span class="kt">int</span> <span class="nf">cmd_millis</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+<span class="kt">int</span> <span class="nf">cmd_about</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+
+<span class="c1">//All aliases for commands</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">m</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"m"</span><span class="p">,</span> <span class="s">"clk"</span><span class="p">,</span> <span class="s">"time"</span><span class="p">,</span> <span class="s">"millis"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">a</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"abt"</span><span class="p">,</span> <span class="s">"about"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+
+<span class="n">CMD</span> <span class="n">cmds</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{</span>
+    <span class="s">"millis"</span><span class="p">,</span> <span class="n">cmd_millis</span><span class="p">,</span> <span class="n">m</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"about"</span><span class="p">,</span> <span class="n">cmd_about</span><span class="p">,</span> <span class="n">a</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">CLI</span> <span class="nf">cli</span><span class="p">(</span><span class="n">cmds</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">CMD</span><span class="p">));</span>
+
+<span class="c1">// SPECIFIC COMMANDS</span>
+<span class="kt">int</span> <span class="nf">cmd_about</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+  <span class="c1">//Check if user called "help about" and displays a help message</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">cli</span><span class="p">.</span><span class="n">help</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">"about"</span><span class="p">,</span> <span class="s">"Displays a message"</span><span class="p">)</span><span class="o">==</span><span class="n">CMD_OK</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"A sample for CLI"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">cmd_millis</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">cli</span><span class="p">.</span><span class="n">help</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">"millis"</span><span class="p">,</span> <span class="s">"Displays milliseconds since board began running this program."</span><span class="p">)</span><span class="o">==</span><span class="n">CMD_OK</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">millis</span><span class="p">());</span>
+  <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+  <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">Serial</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// put your main code here, to run repeatedly:</span>
+  <span class="n">cli</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Every command is a function with this prototype:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+</code></pre></div></div>
+
+<p>Generally, it will have this structure:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">cli</span><span class="p">.</span><span class="n">help</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">"mycommand"</span><span class="p">,</span> <span class="s">"The help text of the command"</span><span class="p">)</span> <span class="o">==</span> <span class="n">CMD_OK</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">//Your code here</span>
+  
+  <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It must return <code class="language-plaintext highlighter-rouge">CMD_OK</code> or <code class="language-plaintext highlighter-rouge">CMD_FAIL</code>.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">CLI::help</code> method, allows each command to return a help message. <code class="language-plaintext highlighter-rouge">CLI::run</code> is the main entry point. It will return immediately if there are no characters on <code class="language-plaintext highlighter-rouge">Serial</code>. It will wait until <code class="language-plaintext highlighter-rouge">\n</code> is sent.</p>
+
+<p>This is the output when the sample runs:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>21:45:56.188 -&gt; <span class="o">&gt;</span> <span class="nb">help
+</span>21:45:58.416 -&gt; The following commands are available:
+21:45:58.416 -&gt;   millis  <span class="o">(</span>m, clk, <span class="nb">time</span>, millis<span class="o">)</span>
+21:45:58.416 -&gt;   about  <span class="o">(</span>a, about<span class="o">)</span>
+21:45:58.416 -&gt; 
+21:45:58.416 -&gt; <span class="o">&gt;</span> about
+21:46:04.993 -&gt; A sample <span class="k">for </span>CLI
+21:46:04.993 -&gt; <span class="o">&gt;</span> 
+21:46:06.415 -&gt; <span class="o">&gt;</span> <span class="nb">time
+</span>21:46:11.823 -&gt; 40475
+21:46:11.823 -&gt; <span class="o">&gt;</span> m
+21:46:13.565 -&gt; 42221
+21:46:13.565 -&gt; <span class="o">&gt;</span> millis
+21:46:15.754 -&gt; 44406
+21:46:15.754 -&gt; <span class="o">&gt;</span> <span class="nb">help </span>millis
+21:46:19.753 -&gt; Usage millis. Displays milliseconds since board began running this program.
+21:46:19.753 -&gt; <span class="o">&gt;</span> 
+</code></pre></div></div>
+
+  </div>
+
+  
+  
+  
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eugenio Pace Technical Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eugenio Pace Technical Blog</li><li><a class="u-email" href="mailto:eugeniop@auth0.com">eugeniop@auth0.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/eugeniop"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">eugeniop</span></a></li><li><a href="https://www.twitter.com/eugenio_pace"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eugenio_pace</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Welcome to my technical blog. I'm Eugenio. Engineer. Problem solver. Auth0 CEO and co-founder.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<iframe style="display: none;" src="./A CLI for Arduino - followup _ Eugenio Pace Technical Blog_files/saved_resource(2).html"></iframe><iframe id="dsq-app7335" name="dsq-app7335" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./A CLI for Arduino - followup _ Eugenio Pace Technical Blog_files/saved_resource(3).html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 100% !important; position: fixed !important; inset: 0px 0px auto auto !important; z-index: 2147483647 !important; display: none !important;"></iframe></body></html>

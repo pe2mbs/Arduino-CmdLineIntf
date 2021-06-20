@@ -1,0 +1,9 @@
+name=CommandLineInterface
+version=1.0
+author=Eugenio Pace <eugeniop@auth0.com>
+maintainer=Marc Bertens-Nguyen <m.bertens@pe2mbs.nl>
+sentence=Allows users to interact with Arduino boards via command line interface.
+paragraph=
+category=User Interface
+url=https://github.com/pe2mbs/Arduino-CmdLineIntf
+architectures=*

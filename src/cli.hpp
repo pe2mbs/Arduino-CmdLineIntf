@@ -66,4 +66,5 @@ protected:
     int cmdHelp( args_t args );
 };
 
+typedef CommandLineInterface 	CommandLineIntf;
 #endif

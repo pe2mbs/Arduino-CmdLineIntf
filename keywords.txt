@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map CommandLineIntf
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+command_t				KEYWORD1
+args_t					KEYWORD1
+CommandLineIntf			KEYWORD1
+CommandLineInterface	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+run						KEYWORD3
+help					KEYWORD3
+parseLine				KEYWORD2
+readLine				KEYWORD2
+findCommand				KEYWORD2
+executeCommand			KEYWORD2
+cmdHelp					KEYWORD2
+#######################################
+# Constants (LITERAL1)
+#######################################
+CMD_ERROR				LITERAL1
+CMD_EXIT				LITERAL1
+CMD_SKIP				LITERAL1
+CMD_OK					LITERAL1
+ARG_BUF_SIZE			LITERAL2
+MAX_NUM_ARGS			LITERAL2

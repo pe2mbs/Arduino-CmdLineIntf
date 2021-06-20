@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<!-- saved from url=(0116)https://eugeniopace.org/arduino/epaper/eink/stoicism/cli/2020/01/25/A-Simple-Command-Line-Interface-for-Arduino.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>A Simple Command Line Interface for Arduino | Eugenio Pace Technical Blog</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="A Simple Command Line Interface for Arduino">
+<meta name="author" content="Eugenio Pace">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="In a previous post I described a simple display of quotes using an ePaper and an Arduino board. There’s no interface (keyboard, buttons, touchscreen), so all interactions and configuration must happen through the terminal (via the USB connection).">
+<meta property="og:description" content="In a previous post I described a simple display of quotes using an ePaper and an Arduino board. There’s no interface (keyboard, buttons, touchscreen), so all interactions and configuration must happen through the terminal (via the USB connection).">
+<link rel="canonical" href="http://eugeniopace.org/arduino/epaper/eink/stoicism/cli/2020/01/25/A-Simple-Command-Line-Interface-for-Arduino.html">
+<meta property="og:url" content="http://eugeniopace.org/arduino/epaper/eink/stoicism/cli/2020/01/25/A-Simple-Command-Line-Interface-for-Arduino.html">
+<meta property="og:site_name" content="Eugenio Pace Technical Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-01-25T21:23:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="A Simple Command Line Interface for Arduino">
+<script async="" src="./A Simple Command Line Interface for Arduino _ Eugenio Pace Technical Blog_files/analytics.js"></script><script type="application/ld+json">
+{"dateModified":"2020-01-25T21:23:00+00:00","datePublished":"2020-01-25T21:23:00+00:00","description":"In a previous post I described a simple display of quotes using an ePaper and an Arduino board. There’s no interface (keyboard, buttons, touchscreen), so all interactions and configuration must happen through the terminal (via the USB connection).","mainEntityOfPage":{"@type":"WebPage","@id":"http://eugeniopace.org/arduino/epaper/eink/stoicism/cli/2020/01/25/A-Simple-Command-Line-Interface-for-Arduino.html"},"url":"http://eugeniopace.org/arduino/epaper/eink/stoicism/cli/2020/01/25/A-Simple-Command-Line-Interface-for-Arduino.html","@type":"BlogPosting","author":{"@type":"Person","name":"Eugenio Pace"},"headline":"A Simple Command Line Interface for Arduino","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./A Simple Command Line Interface for Arduino _ Eugenio Pace Technical Blog_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://eugeniopace.org/feed.xml" title="Eugenio Pace Technical Blog"><script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-87967683-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+<script src="./A Simple Command Line Interface for Arduino _ Eugenio Pace Technical Blog_files/embed.js" data-timestamp="1624156159683"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.567531e1abfac5c88f2ef94b952d12ba.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.e51fe378e0cd63a2764bfb6c7ca542a8.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.56cd48e5a629f9154816339b3fb2942a.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script src="./A Simple Command Line Interface for Arduino _ Eugenio Pace Technical Blog_files/alfie_v4.63f1ab6d6b9d5807dc0c94ef3fe0b851.js" async="" charset="UTF-8"></script></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="https://eugeniopace.org/">Eugenio Pace Technical Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="https://eugeniopace.org/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">A Simple Command Line Interface for Arduino</h1>
+    <p class="post-meta"><time datetime="2020-01-25T21:23:00+00:00" itemprop="datePublished">Jan 25, 2020</time> • <span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Eugenio Pace</span></span> • <span itemprop="time_to_read"><span itemprop="name">
+    
+    Reading time: 10 mins.
+    </span></span></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>In a <a href="https://eugeniopace.org/arduino/epaper/eink/stoicism/2020/01/18/A-Display-of-Stoic-Quotes-using-Arduino-and-e-Paper-Display.html">previous post</a> I described a simple display of quotes using an ePaper and an Arduino board. There’s no interface (keyboard, buttons, touchscreen), so all interactions and configuration must happen through the terminal (via the USB connection).</p>
+
+<p>Mimicking a shell, I wanted to be able to enter commands such as this:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="nb">time
+  </span>Date &amp; Time: 18/01/20 - 21:23
+
+<span class="o">&gt;</span> debug on
+  Debug is ON
+
+<span class="o">&gt;</span> debug off
+  Debug is OFF
+</code></pre></div></div>
+
+<p>I also wanted to:</p>
+
+<ol>
+  <li>Display <em>help</em> on any command</li>
+  <li>Allow commands to have aliases (e.g. <code class="language-plaintext highlighter-rouge">debug</code>, <code class="language-plaintext highlighter-rouge">dbg</code> would be equivalent)</li>
+  <li>Allow subcommands (with aliases too):</li>
+</ol>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> config get TZ
+<span class="nv">TZ</span><span class="o">=</span><span class="nt">-8</span>
+<span class="o">&gt;</span> config g TZ
+<span class="nv">TZ</span><span class="o">=</span><span class="nt">-8</span>
+<span class="o">&gt;</span> cfg get TZ
+<span class="nv">TZ</span><span class="o">=</span><span class="nt">-8</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>The example above displays the contents of a config parameter <code class="language-plaintext highlighter-rouge">TZ</code>.</p>
+</blockquote>
+
+<p>The fundamental data structure is:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">cmd_name</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">cmd_handler</span><span class="p">)(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">aliases</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">CMD</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>And an example of my definitions:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">cmd_help</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+<span class="kt">int</span> <span class="nf">cmd_battery</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+<span class="kt">int</span> <span class="nf">cmd_clock</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+<span class="kt">int</span> <span class="nf">cmd_config</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+<span class="kt">int</span> <span class="nf">cmd_debug</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]);</span>
+
+<span class="c1">//All aliases for commands</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">a</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"h"</span><span class="p">,</span> <span class="s">"hlp"</span><span class="p">,</span> <span class="s">"hlep"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">b</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"b"</span><span class="p">,</span> <span class="s">"bat"</span><span class="p">,</span> <span class="nb">NULL</span> <span class="p">};</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">c</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"c"</span><span class="p">,</span> <span class="s">"clk"</span><span class="p">,</span> <span class="s">"time"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">co</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"con"</span><span class="p">,</span> <span class="s">"cfg"</span><span class="p">,</span> <span class="s">"conifg"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">d</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"d"</span><span class="p">,</span> <span class="s">"dbg"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+
+<span class="n">CMD</span> <span class="n">cmds</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{</span>
+    <span class="s">"help"</span><span class="p">,</span> <span class="n">cmd_help</span><span class="p">,</span> <span class="n">a</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"battery"</span><span class="p">,</span> <span class="n">cmd_battery</span><span class="p">,</span> <span class="n">b</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"clock"</span><span class="p">,</span> <span class="n">cmd_clock</span><span class="p">,</span> <span class="n">c</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"config"</span><span class="p">,</span> <span class="n">cmd_config</span><span class="p">,</span> <span class="n">co</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s">"debug"</span><span class="p">,</span> <span class="n">cmd_debug</span><span class="p">,</span> <span class="n">d</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>I added a bunch of general purpose functions:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">CLI_Run</span><span class="p">(){</span>
+  <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="kt">char</span> <span class="n">args</span><span class="p">[</span><span class="n">MAX_NUM_ARGS</span><span class="p">][</span><span class="n">ARG_BUF_SIZE</span><span class="p">];</span>
+
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"&gt; "</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">read_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">parse_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="p">){</span>
+      <span class="n">ret</span> <span class="o">=</span> <span class="n">executeCommand</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">memset</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">LINE_BUF_SIZE</span><span class="p">);</span>
+  <span class="n">memset</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">MAX_NUM_ARGS</span> <span class="o">*</span> <span class="n">ARG_BUF_SIZE</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">read_line</code> simply reads, well… a line from the terminal. <code class="language-plaintext highlighter-rouge">parse_line</code> simply tokenizes the input into words (using <code class="language-plaintext highlighter-rouge">strtok</code>). All pretty regular stuff.</p>
+
+<p><code class="language-plaintext highlighter-rouge">findCommand</code> is slightly more interesting:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CMD</span> <span class="o">*</span> <span class="nf">findCommand</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span> <span class="n">command</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">command</span> <span class="o">||</span> <span class="n">strlen</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num_commands</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="c1">//Search by name</span>
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cmd_name</span><span class="p">)){</span>
+          <span class="k">return</span> <span class="o">&amp;</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+      <span class="p">}</span>
+      <span class="c1">//Search all aliases</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="p">]){</span>
+          <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">])){</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It will attempt to find the specific <code class="language-plaintext highlighter-rouge">CMD</code> by name, and if not found, it will try all aliases (if any).</p>
+
+<p>Finally, if a <code class="language-plaintext highlighter-rouge">CMD</code> is found, we execute it passing along all parameters (tokenized):</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">executeCommand</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>  
+  <span class="n">CMD</span> <span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="n">findCommand</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">c</span><span class="p">){</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_handler</span><span class="p">)(</span><span class="n">args</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Invalid command. Type </span><span class="se">\"</span><span class="s">help</span><span class="se">\"</span><span class="s"> for more."</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The prototype of each command is pretty straightforward too. Here’s an example:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">cmd_debug</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">help</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">"debug"</span><span class="p">,</span> <span class="s">"[on|off]. on (default): enables debug output. off:disables output."</span><span class="p">)</span><span class="o">==</span><span class="n">CMD_OK</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">"on"</span><span class="p">)){</span>
+    <span class="n">DebugOn</span><span class="p">();</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Debug is ON"</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">DebugOff</span><span class="p">();</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Debug is OFF"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">Debug</span><span class="p">(</span><span class="s">"cmd_debug completed"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">help</code> is another helper function to display … help:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">help</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">],</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">cmd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">helpString</span><span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">"help"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)){</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Usage "</span> <span class="o">+</span> <span class="n">String</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="o">+</span> <span class="s">". "</span> <span class="o">+</span> <span class="n">String</span><span class="p">(</span><span class="n">helpString</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">CMD_SKIP</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Another helper function evaluates possible aliases for <em>subcommands</em>:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">isSubcommand</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">subcommand</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">options</span><span class="p">[]){</span>
+   <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">while</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="n">x</span><span class="p">]){</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">subcommand</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="n">x</span><span class="o">++</span><span class="p">])){</span>
+      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Which can be used such as in this example:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">cmd_config</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+  
+  <span class="k">if</span><span class="p">(</span><span class="n">help</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="s">"config"</span><span class="p">,</span> <span class="s">"[ls|get|set|save|reset].</span><span class="se">\r\n</span><span class="s">ls (default):returns all configuration parameters. get {param}: returns the specific value of the parameter.</span><span class="se">\r\n</span><span class="s">get {param} {value}: sets parameter value. save:saves config values to store. reset: resets configuration to defaults."</span><span class="p">)</span><span class="o">==</span><span class="n">CMD_OK</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">gsc</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"get"</span><span class="p">,</span> <span class="s">"g"</span><span class="p">,</span> <span class="s">"gte"</span><span class="p">,</span> <span class="s">"gp"</span><span class="p">,</span> <span class="nb">NULL</span> <span class="p">};</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">isSubcommand</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">gsc</span><span class="p">)){</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Config_Get</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">v</span><span class="p">){</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"="</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Error. Parameter ["</span> <span class="o">+</span> <span class="n">String</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s">"] doesn't exist."</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">CMD_ERROR</span><span class="p">;</span>
+    <span class="p">}</span> 
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">CMD_ERROR</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">get</code>, <code class="language-plaintext highlighter-rouge">g</code>, <code class="language-plaintext highlighter-rouge">gte</code> and <code class="language-plaintext highlighter-rouge">gp</code> are all equivalent.</p>
+
+<p>The last interesting function is the handler for the <code class="language-plaintext highlighter-rouge">help</code> command itself:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">cmd_help</span><span class="p">(</span><span class="kt">char</span> <span class="n">args</span><span class="p">[][</span><span class="n">ARG_BUF_SIZE</span><span class="p">]){</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"The following commands are available:"</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num_commands</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">);</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cmd_name</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">){</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"  ("</span><span class="p">);</span>
+          <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="k">while</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="p">]){</span>
+            <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">cmds</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">aliases</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]){</span>
+              <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">", "</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">")"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">CMD_OK</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">CMD</span> <span class="o">*</span> <span class="n">c</span> <span class="o">=</span> <span class="n">findCommand</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="kt">char</span> <span class="n">_args</span><span class="p">[</span><span class="n">MAX_NUM_ARGS</span><span class="p">][</span><span class="n">ARG_BUF_SIZE</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="s">"help"</span><span class="p">,</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_name</span><span class="p">)){</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Command not found"</span><span class="p">);</span>
+      <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">"help"</span><span class="p">);</span>
+      <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">""</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">cmd_help</span><span class="p">(</span><span class="n">_args</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_name</span><span class="p">);</span>
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">_args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">"help"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="o">-&gt;</span><span class="n">cmd_handler</span><span class="p">)(</span><span class="n">_args</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>If the command receives no arguments, it just prints all commands available. If an argument is passed (e.g. <code class="language-plaintext highlighter-rouge">help config</code>), it will attempt finding the command (by name or by alias). If found and it is <em>not</em> “help”, then we route to the handler with an “help” argument. So it displays the help string. If the command is not found or the help is for “help”, then we just call the <code class="language-plaintext highlighter-rouge">cmd_help</code> function recursively.</p>
+  </div>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eugenio Pace Technical Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Eugenio Pace Technical Blog</li><li><a class="u-email" href="mailto:eugeniop@auth0.com">eugeniop@auth0.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/eugeniop"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">eugeniop</span></a></li><li><a href="https://www.twitter.com/eugenio_pace"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">eugenio_pace</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Welcome to my technical blog. I'm Eugenio. Engineer. Problem solver. Auth0 CEO and co-founder.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<iframe style="display: none;" src="./A Simple Command Line Interface for Arduino _ Eugenio Pace Technical Blog_files/saved_resource(3).html"></iframe><iframe id="dsq-app6841" name="dsq-app6841" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./A Simple Command Line Interface for Arduino _ Eugenio Pace Technical Blog_files/saved_resource(4).html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 100% !important; position: fixed !important; inset: 0px 0px auto auto !important; z-index: 2147483647 !important; display: none !important;"></iframe></body></html>

@@ -23,7 +23,7 @@
  * Improvements for speed, size (RAM), flexability and reuseability.
  * 
  */
-#include "cli.hpp"
+#include <cli.hpp>
 
 CommandLineIntf::CommandLineIntf( Stream* s, command_t* c, unsigned int l ) : line()
 {
