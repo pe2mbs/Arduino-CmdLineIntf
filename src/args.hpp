@@ -1,5 +1,5 @@
-#ifndef CLI_H
-#define CLI_H
+#ifndef ARGS_H
+#define ARGS_H
 /***
  * Command line interface for Arduino boards
  * 
@@ -26,46 +26,25 @@
  * 
  */
 #include <Arduino.h>
-#include <args.hpp>
 
-// Negative results for the internal command line interface.
-// Zero as standard OK result.
-// Positive results for the user functions.  
-enum { 	CMD_ERROR, 
-		CMD_EXIT, 
-		CMD_SKIP, 
-		CMD_OK = 0 };
+#define ARG_BUF_SIZE 20
+#define MAX_NUM_ARGS 10
 
-typedef int  (*handler_t)( ArgumentsInterface* args );
-
-typedef struct 
+class ArgumentsIntf
 {
-    const char*   	name;
-    handler_t     	handler;
-    const char**  	aliases;
-} command_t;
-
-class CommandLineIntf 
-{
-    String      	line;
-	ArgumentsIntf	args;
-    command_t*  	commands;
-    int         	cmdCount;
-    Stream*     	console;
- 
+private:
+    char        args[ MAX_NUM_ARGS ][ ARG_BUF_SIZE ];
+	uint8_t		cnt;
 public:
-    CommandLineIntf( Stream* s, command_t* c, unsigned int l );
-    CommandLineIntf( command_t* c, unsigned int l );
-    int run( void );
-    int help( ArgumentsInterface* args, const char* cmd, const char* helpString );
-protected:
-    int parseLine( void );
-    char* readLine( void );
-    command_t* findCommand( char* command );
-    int executeCommand( void );
-    int cmdHelp( ArgumentsInterface* args );
+	ArgumentsIntf( void );
+	void clear( void );
+	uint8_t	count( void );
+	void push( char* argument );
+	const char* toString( int8_t idx );
+	int cmp( int8_t idx, const char* text );
+	int toInteger( int8_t idx, int def = 0 );
+	void print( Stream* stream );
 };
 
-typedef CommandLineIntf		CommandLineInterface;
-
+typedef ArgumentsIntf 	ArgumentsInterface;
 #endif

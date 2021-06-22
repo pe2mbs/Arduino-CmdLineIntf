@@ -1,5 +1,3 @@
-#ifndef CLI_H
-#define CLI_H
 /***
  * Command line interface for Arduino boards
  * 
@@ -25,47 +23,24 @@
  * Improvements for speed, size (RAM), flexability and reuseability.
  * 
  */
-#include <Arduino.h>
-#include <args.hpp>
+#include <cli.hpp>
 
-// Negative results for the internal command line interface.
-// Zero as standard OK result.
-// Positive results for the user functions.  
-enum { 	CMD_ERROR, 
-		CMD_EXIT, 
-		CMD_SKIP, 
-		CMD_OK = 0 };
-
-typedef int  (*handler_t)( ArgumentsInterface* args );
-
-typedef struct 
+/*
+*	Command line interface class constructor for Stream interface
+*
+*/
+CommandLineIntf::CommandLineIntf( Stream* s, command_t* c, unsigned int l ) : line(), args()
 {
-    const char*   	name;
-    handler_t     	handler;
-    const char**  	aliases;
-} command_t;
-
-class CommandLineIntf 
-{
-    String      	line;
-	ArgumentsIntf	args;
-    command_t*  	commands;
-    int         	cmdCount;
-    Stream*     	console;
- 
-public:
-    CommandLineIntf( Stream* s, command_t* c, unsigned int l );
-    CommandLineIntf( command_t* c, unsigned int l );
-    int run( void );
-    int help( ArgumentsInterface* args, const char* cmd, const char* helpString );
-protected:
-    int parseLine( void );
-    char* readLine( void );
-    command_t* findCommand( char* command );
-    int executeCommand( void );
-    int cmdHelp( ArgumentsInterface* args );
-};
-
-typedef CommandLineIntf		CommandLineInterface;
-
-#endif
+    /***
+     *  This runs the command line interface on a stream provided by the main application.
+     *  Functions used on stream are:
+     *  - print()
+     *  - println()
+     *  - available()
+     *  - readStringUntil()
+     */
+    this->console     	= s;
+    this->commands    	= c;
+    this->cmdCount  	= l;
+    return;
+}

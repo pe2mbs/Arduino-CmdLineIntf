@@ -24,34 +24,15 @@
  * 
  */
 #include <cli.hpp>
+/*
+*	This are the core functions of the command line interface class.
+*/
+#define __version__		"1.1.0"
 
-CommandLineIntf::CommandLineIntf( Stream* s, command_t* c, unsigned int l ) : line()
-{
-    /***
-     *  This runs the command line interface on a stream provided by the main application.
-     *  Functions used on stream are:
-     *  - print()
-     *  - println()
-     *  - available()
-     *  - readStringUntil()
-     */
-    this->console     = s;
-    this->commands    = c;
-    this->noCommands  = l;
-    return;
-}
-
-CommandLineIntf::CommandLineIntf( command_t* c, unsigned int l ) : line()
-{
-    /***
-     *  This runs the command line interface on the serial port of the Ardiuno
-     */
-    this->console     = &Serial;
-    this->commands    = c;
-    this->noCommands  = l;
-    return;
-}
-
+/*
+*	Command line interface class generic functions
+*
+*/
 int CommandLineIntf::run( void )
 {
     int ret = CMD_OK;
@@ -61,21 +42,21 @@ int CommandLineIntf::run( void )
     if ( this->readLine() )
     {
         // Process the command line entered by the user
-        ret = this->parseLine( this->line.c_str(), this->args ); 
+        ret = this->parseLine(); 
         if ( ret > CMD_OK )
         {
-            ret = executeCommand( this->args );
+            ret = executeCommand();
         }
     }
     // Clear the command line data
     this->line = "";
-    memset( this->args, 0, sizeof( char ) * MAX_NUM_ARGS * ARG_BUF_SIZE );
+    this->args.clear();
     return ( ret );
 }
 
-int CommandLineIntf::help( args_t args, const char * cmd, const char * helpString )
+int CommandLineIntf::help( ArgumentsIntf* args, const char * cmd, const char * helpString )
 {
-    if ( !strncmp( args[ 1 ], "help", 4 ) )
+    if ( !args->cmp( 1, "help" ) )
     {
         this->console->print( "Usage " );
         this->console->print( cmd );
@@ -86,23 +67,20 @@ int CommandLineIntf::help( args_t args, const char * cmd, const char * helpStrin
     return ( CMD_SKIP ); 
 }
 
-int CommandLineIntf::parseLine( char* line, args_t args )
+int CommandLineIntf::parseLine( void )
 {
     char* argument;
-    int counter = 0;
     // Get the first token until the space character
-    argument = strtok( line, " " );
+    argument = strtok( this->line.c_str(), " " );
     while ( ( argument != NULL ) )
     {
         // Check the number of arguments not exceeded
-        if ( counter < MAX_NUM_ARGS )
+        if ( this->args.count() < MAX_NUM_ARGS )
         {
             // Check the argument length not exceed the buffer space.
             if ( strlen( argument ) < ARG_BUF_SIZE )
             {
-                // Copy the argument into the args array
-                strcpy( args[ counter ], argument );
-                counter++;
+				this->args.push( argument );
                 // Get the next token until the space character
                 argument = strtok( NULL, " " );
             }
@@ -120,7 +98,7 @@ int CommandLineIntf::parseLine( char* line, args_t args )
             return ( CMD_ERROR );
         }
     }
-    return ( counter );
+    return ( this->args.count() );
 }
 
 char* CommandLineIntf::readLine( void )
@@ -148,10 +126,10 @@ command_t* CommandLineIntf::findCommand( char* command )
         return ( NULL );
     }
     // Walk the commands array to find the command 
-    for ( int i = 0; i < this->noCommands; i++ )
+    for ( int i = 0; i < this->cmdCount; i++ )
     {
         // Search by name
-        if ( !strcmp( command, this->commands[ i ].cmd_name ) )
+        if ( !strcmp( command, this->commands[ i ].name ) )
         {
             // Found it, return the command structure
             return ( &this->commands[ i ] );
@@ -174,30 +152,30 @@ command_t* CommandLineIntf::findCommand( char* command )
     return ( NULL );
 }
 
-int CommandLineIntf::executeCommand( args_t args )
+int CommandLineIntf::executeCommand( void )
 {  
-    command_t* c = findCommand( args[ 0 ] );
+    command_t* c = findCommand( this->args.toString( 0 ) );
     if ( c )
     {
-        return ( *c->cmd_handler )( args );
+        return ( *c->handler )( &this->args );
     }
-    if ( !strcmp( args[ 0 ], "help" )|| !strcmp( args[ 0 ], "h" ) )
+    if ( !this->args.cmp( 0, "help" ) || !this->args.cmp( 0, "h" ) )
     {
-        return ( this->cmdHelp( args ) );
+        return ( this->cmdHelp( &this->args ) );
     }   
     this->console->println( F( "Invalid command. Type \"help\" for more." ) );
     return ( CMD_ERROR );
 }
 
-int CommandLineIntf::cmdHelp( args_t args )
+int CommandLineIntf::cmdHelp( ArgumentsIntf* args )
 {
-    if ( args[ 1 ][ 0 ] == 0 )
+    if ( args->toString( 1 )[ 0 ] == 0 )
     {
         this->console->println( F( "The following commands are available:" ) );
-        for( int i = 0; i < this->noCommands; i++ )
+        for( int i = 0; i < this->cmdCount; i++ )
         {
             this->console->print( "  " );
-            this->console->print( this->commands[ i ].cmd_name );
+            this->console->print( this->commands[ i ].name );
             if ( this->commands[ i ].aliases )
             {
                 this->console->print( "  (" );
@@ -220,21 +198,21 @@ int CommandLineIntf::cmdHelp( args_t args )
     } 
     else 
     {
-        command_t* c = findCommand( args[ 1 ] );
-        // char _args[ MAX_NUM_ARGS ][ ARG_BUF_SIZE ];
-        char _args[ 2 ][ ARG_BUF_SIZE ];
-        if ( c == NULL || !strcmp( "help", c->cmd_name ) )
+        command_t* c = findCommand( args->toString( 1 ) );
+        if ( c == NULL || !strcmp( "help", c->name ) )
         {
             if ( c == NULL ) 
             { 
                 this->console->println( F( "Command not found" ) ); 
             }
-            strcpy( _args[ 0 ], "help" );
-            strcpy( _args[ 1 ], "" );
-            return ( this->cmdHelp( _args ) );
+			this->args.clear();
+            this->args.push( "help" );
+            this->args.push( "" );
+            return ( this->cmdHelp( &this->args ) );
         }
-        strcpy( _args[ 0 ], c->cmd_name );
-        strcpy( _args[ 1 ], "help" );
-        return ( (*c->cmd_handler)( _args ) );
+		this->args.clear();
+        this->args.push( c->name );
+        this->args.push( "help" );
+        return ( (*c->handler)( &this->args ) );
     }
 }

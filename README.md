@@ -13,12 +13,8 @@ First you need to clone the repository
 
     # git clone https://github.com/pe2mbs/Arduino-CmdLineIntf.git
 
-    # cd Arduino-CmdLineIntf
-On Linux:     
-    # ./build-package.sh
+    # python build-package.py
 
-On Windows
-    # build-package.cmd
 
 Now in ARDUINO ide 
     > select Scetch > Include library >  Add .ZIP library 
@@ -28,3 +24,13 @@ Now in ARDUINO ide
 
 ## Using the library
 In the File > Examples menu the CommandLineInterface example can be found.
+
+Initial it supports 10 arugments with a maximun length 20 characters. To 
+change this find the file %PATFORMATH%/libraries/CommandLineIntf/src/args.hpp
+There you can change the defines ARG_BUF_SIZE and MAX_NUM_ARGS, when increasing these more memory shall be used, by decreasing less memory shall be used.
+
+## Example
+In the menu File->Examples->CommandLineIntf the example CommandLineInterface.ino 
+can be found. 
+
+

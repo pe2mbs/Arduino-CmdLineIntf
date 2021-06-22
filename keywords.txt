@@ -6,7 +6,8 @@
 # Datatypes (KEYWORD1)
 #######################################
 command_t				KEYWORD1
-args_t					KEYWORD1
+ArgumentsIntf			KEYWORD1
+ArgumentsInterface		KEYWORD1
 CommandLineIntf			KEYWORD1
 CommandLineInterface	KEYWORD1
 #######################################
